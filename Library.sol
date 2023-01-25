@@ -43,6 +43,7 @@ contract Library {
 
         if (doesBookExist[keyHash] = true) {
             books[_id].quantity += _quantity;
+            return;
         }
 
         books[_id] = Book(_id, _title, _quantity);
