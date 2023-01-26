@@ -41,7 +41,7 @@ contract Library {
     ) public onlyOwner {
         bytes32 keyHash = keccak256(abi.encodePacked(_id));
 
-        if (doesBookExist[keyHash] = true) {
+        if (doesBookExist[keyHash] == true) {
             books[_id].quantity += _quantity;
             return;
         }
@@ -52,7 +52,7 @@ contract Library {
     function BorrowBook(uint256 _id) public checkIfBookExist(_id) {
         require(borrowedBooks[msg.sender][_id] = false);
         require(books[_id].quantity > 0);
-        borrowedBooks[msg.sender][_id] = true;
+        borrowedBooks[msg.sender][_id] == true;
         books[_id].quantity--;
         borrowHistory[_id].push(msg.sender);
     }
