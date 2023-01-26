@@ -65,6 +65,7 @@ contract Library {
         borrowHistory[_id].push(msg.sender);
     }
 
+    //checks if this book is in library to be able to be returned back.
     function ReturnBook(uint256 _id) public checkIfBookExist(_id) {
         require(borrowedBooks[msg.sender][_id] == true);
         borrowedBooks[msg.sender][_id] = false;
