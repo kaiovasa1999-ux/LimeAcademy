@@ -50,15 +50,15 @@ contract Library {
     }
 
     function BorrowBook(uint256 _id) public checkIfBookExist(_id) {
-        require(borrowedBooks[msg.sender][_id] = false);
+        require(borrowedBooks[msg.sender][_id] == false);
         require(books[_id].quantity > 0);
-        borrowedBooks[msg.sender][_id] == true;
+        borrowedBooks[msg.sender][_id] = true;
         books[_id].quantity--;
         borrowHistory[_id].push(msg.sender);
     }
 
     function ReturnBook(uint256 _id) public {
-        require(borrowedBooks[msg.sender][_id] = true);
+        require(borrowedBooks[msg.sender][_id] == true);
         borrowedBooks[msg.sender][_id] = false;
         books[_id].quantity++;
     }
