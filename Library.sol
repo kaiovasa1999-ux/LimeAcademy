@@ -22,7 +22,7 @@ contract Library {
     modifier checkIfBookExist(uint256 _id) {
         bytes32 keyHash = keccak256(abi.encodePacked(_id));
         require(
-            doesBookExist[keyHash] = true,
+            doesBookExist[keyHash] == true,
             "book doesn't exist in our library"
         );
         _;
