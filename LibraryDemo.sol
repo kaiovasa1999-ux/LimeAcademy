@@ -15,7 +15,7 @@ contract Library {
     mapping(uint256 => address[]) borrowHistory;
 
     modifier onlyOwner() {
-        require(msg.sender == owner, "only owner can do that");
+        require(msg.sender == owner, "only owner cand do that");
         _;
     }
 
@@ -49,6 +49,14 @@ contract Library {
         books[_id] = Book(_id, _title, _quantity);
     }
 
+    function RemoveBook(uint256 _bookID)
+        public
+        onlyOwner
+        checkIfBookExist(_bookID)
+    {
+        delete books[_bookID];
+    }
+
     function BorrowBook(uint256 _id) public checkIfBookExist(_id) {
         require(borrowedBooks[msg.sender][_id] == false);
         require(books[_id].quantity > 0);
@@ -57,7 +65,7 @@ contract Library {
         borrowHistory[_id].push(msg.sender);
     }
 
-    function ReturnBook(uint256 _id) public {
+    function ReturnBook(uint256 _id) public checkIfBookExist(_id) {
         require(borrowedBooks[msg.sender][_id] == true);
         borrowedBooks[msg.sender][_id] = false;
         books[_id].quantity++;
