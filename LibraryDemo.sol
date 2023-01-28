@@ -30,6 +30,19 @@ contract Library {
         _;
     }
 
+    /*
+    if externel code size is > then 0 then the givan address
+    is from contract
+    */
+
+    function isContractAddress(address _addr) internal view returns (bool) {
+        uint32 size;
+        assembly {
+            size := extcodesize(_addr)
+        }
+        return (size > 0);
+    }
+
     struct Book {
         uint256 id;
         string title;
@@ -62,6 +75,7 @@ contract Library {
     function BorrowBook(uint256 _id) public checkIfBookExist(_id) {
         require(borrowedBooks[msg.sender][_id] == false);
         require(books[_id].quantity > 0);
+        require(!isContractAddress(msg.sender));
         borrowedBooks[msg.sender][_id] = true;
         books[_id].quantity--;
         borrowHistory[_id].push(msg.sender);
@@ -69,6 +83,7 @@ contract Library {
 
     //checks if this book is in library to be able to be returned back.
     function ReturnBook(uint256 _id) public checkIfBookExist(_id) {
+        require(!isContractAddress(msg.sender));
         require(borrowedBooks[msg.sender][_id] == true);
         borrowedBooks[msg.sender][_id] = false;
         books[_id].quantity++;
@@ -79,6 +94,7 @@ contract Library {
         view
         returns (address[] memory)
     {
+        require(!isContractAddress(msg.sender));
         return borrowHistory[_Id];
     }
 }
