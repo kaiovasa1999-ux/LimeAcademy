@@ -22,7 +22,7 @@ contract Library {
     modifier checkIfBookExist(uint256 _id) {
         bytes32 keyHash = keccak256(abi.encodePacked(_id));
         require(
-            doesBookExist[keyHash] == true,
+            doesBookExist[keyHash] == false,
             "book doesn't exist in our library"
         );
         _;
@@ -38,7 +38,7 @@ contract Library {
         uint256 _id,
         string memory _title,
         uint256 _quantity
-    ) public onlyOwner {
+    ) external onlyOwner {
         bytes32 keyHash = keccak256(abi.encodePacked(_id));
 
         if (doesBookExist[keyHash] == true) {
@@ -49,7 +49,7 @@ contract Library {
         books[_id] = Book(_id, _title, _quantity);
     }
 
-    function BorrowBook(uint256 _id) public checkIfBookExist(_id) {
+    function BorrowBook(uint256 _id) external checkIfBookExist(_id) {
         require(borrowedBooks[msg.sender][_id] == false);
         require(books[_id].quantity > 0);
         borrowedBooks[msg.sender][_id] = true;
@@ -57,14 +57,14 @@ contract Library {
         borrowHistory[_id].push(msg.sender);
     }
 
-    function ReturnBook(uint256 _id) public {
+    function ReturnBook(uint256 _id) external {
         require(borrowedBooks[msg.sender][_id] == true);
         borrowedBooks[msg.sender][_id] = false;
         books[_id].quantity++;
     }
 
     function BookTenantsHistory(uint256 _Id)
-        public
+        external
         view
         returns (address[] memory)
     {

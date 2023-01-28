@@ -14,6 +14,8 @@ contract Library {
     mapping(address => mapping(uint256 => bool)) borrowedBooks;
     mapping(uint256 => address[]) borrowHistory;
 
+    event addedNewBook(uint256 _Id, string _title, uint256 _quantity);
+
     modifier onlyOwner() {
         require(msg.sender == owner, "only owner cand do that");
         _;
